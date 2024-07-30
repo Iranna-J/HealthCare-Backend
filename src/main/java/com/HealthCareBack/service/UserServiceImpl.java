@@ -8,8 +8,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.HealthCareBack.dto.Patient;
 import com.HealthCareBack.dto.User;
 import com.HealthCareBack.exception.UserNotFoundByIdException;
+import com.HealthCareBack.repo.PatientRepo;
 import com.HealthCareBack.repo.UserRepositiry;
 import com.HealthCareBack.securityConfig.ResponseStructure;
 
@@ -20,13 +22,19 @@ public class UserServiceImpl implements UserService {
     private UserRepositiry userRepo;
     
     @Autowired
+    private PatientRepo patientRepo;
+    
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Override
     public User createUser(User user) {
         String encodedPassword = passwordEncoder.encode(user.getPassword());
+        Patient patient = new Patient();
         user.setPassword(encodedPassword);
-        return userRepo.save(user);
+        User u1=userRepo.save(user);
+//        patientRepo.save(patient);
+        return u1;
     }
 
     @Override
